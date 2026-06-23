@@ -1,0 +1,46 @@
+package com.kefera.backend.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "categorias", schema = "kefera")
+public class Categoria {
+
+    @Id
+    @Column(name = "id_categoria")
+    private Integer idCategoria;
+
+    @Column(name = "nombre")
+    private String nombre;
+
+    @Column(name = "descripcion")
+    private String descripcion;
+
+    public Integer getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Integer idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+}
