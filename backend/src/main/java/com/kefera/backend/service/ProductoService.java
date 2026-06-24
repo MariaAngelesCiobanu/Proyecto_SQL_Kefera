@@ -27,4 +27,11 @@ public class ProductoService {
         return repository.findById(id)
                 .orElse(null);
     }
+
+    public Producto obtenerEntidadPorId(
+        Integer id) {
+
+    return repository.findById(id)
+            .orElse(null);
+}
 }

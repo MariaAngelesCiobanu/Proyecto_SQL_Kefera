@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/llamadas
+Content-Type: application/json
+
+{
+  "idSesion": 1,
+  "tipo": "CAMARERO",
+  "atendida": false
+}

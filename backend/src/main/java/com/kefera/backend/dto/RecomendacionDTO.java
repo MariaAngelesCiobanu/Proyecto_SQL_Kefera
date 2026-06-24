@@ -2,12 +2,12 @@ package com.kefera.backend.dto;
 
 import java.math.BigDecimal;
 
-public class ProductoDTO {
+public class RecomendacionDTO {
 
     private Integer idProducto;
     private String nombre;
     private BigDecimal precio;
-    private String imagenPrincipal;
+    private String motivo;
 
     public Integer getIdProducto() {
         return idProducto;
@@ -33,11 +33,11 @@ public class ProductoDTO {
         this.precio = precio;
     }
 
-    public String getImagenPrincipal() {
-        return imagenPrincipal;
+    public String getMotivo() {
+        return motivo;
     }
 
-    public void setImagenPrincipal(String imagenPrincipal) {
-        this.imagenPrincipal = imagenPrincipal;
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
     }
 }
