@@ -60,14 +60,27 @@ class _ProductPageState extends State<ProductPage> {
               final producto = productos[index];
 
               return ListTile(
-                title: Text(
-                  producto["nombre"] ?? "",
-                ),
+  title: Text(
+    producto["nombre"] ?? "",
+  ),
 
-                subtitle: Text(
-                  "${producto["precio"]}",
-                ),
-              );
+  subtitle: Text(
+    "${producto["precio"]}",
+  ),
+
+  trailing: const Icon(
+    Icons.arrow_forward_ios,
+  ),
+
+  onTap: () {
+
+    Navigator.pushNamed(
+      context,
+      '/detalle',
+      arguments: producto["idProducto"],
+    );
+  },
+);
             },
           );
         },

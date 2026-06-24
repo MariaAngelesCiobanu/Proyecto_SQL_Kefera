@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/menu_page.dart';
-import 'pages/product_page.dart';
+import 'pages/burger_detail_page.dart';
+import 'pages/division_cuenta_page.dart';
 
 void main() {
   runApp(const KeferaApp());
@@ -12,13 +13,28 @@ class KeferaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Kefera',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF0A0A0A),
-      ),
-      home: const ProductPage(),
-    );
+  debugShowCheckedModeBanner: false,
+  title: 'Kefera',
+
+  theme: ThemeData(
+    scaffoldBackgroundColor: const Color(0xFF0A0A0A),
+  ),
+
+  routes: {
+    '/detalle': (context) {
+
+      final id = ModalRoute.of(context)!
+          .settings
+          .arguments as int;
+
+      return BurgerDetailPage(
+        idProducto: id,
+      );
+    },
+  },
+
+  home: const HomePage(),
+);
   }
 }
 
@@ -90,6 +106,27 @@ class HomePage extends StatelessWidget {
 
                     const SizedBox(height: 15),
 
+                  SizedBox(
+  width: double.infinity,
+  height: 58,
+  child: ElevatedButton(
+    onPressed: () {
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) =>
+              const DivisionCuentaPage(),
+        ),
+      );
+    },
+
+    child: const Text(
+      'DIVIDIR CUENTA',
+    ),
+  ),
+),
+
                     // RESERVAR
                     SizedBox(
                       width: double.infinity,
@@ -109,6 +146,7 @@ class HomePage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
+                        
 
                         child: const Text(
                           'RESERVAR MESA',

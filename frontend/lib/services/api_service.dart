@@ -3,8 +3,11 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
 
+/*static const String baseUrl =
+    'https://tiara-thirteen-output.ngrok-free.dev/api/productos';*/
+
 static const String baseUrl =
-    'https://tiara-thirteen-output.ngrok-free.dev/api';
+'http://localhost:8080/api';
 
   Future<List<dynamic>> obtenerProductos() async {
 
@@ -33,6 +36,23 @@ static const String baseUrl =
     throw Exception(
         'Error cargando detalle');
   }
+
+  Future<List<dynamic>> obtenerProductosPorCategoria(
+    int idCategoria) async {
+
+  final response = await http.get(
+    Uri.parse(
+      '$baseUrl/productos/categoria/$idCategoria',
+    ),
+  );
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  }
+
+  throw Exception(
+      'Error cargando productos');
+}
 
   Future<List<dynamic>> obtenerCategorias() async {
 
