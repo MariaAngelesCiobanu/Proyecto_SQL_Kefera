@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class ApiService {
 
 static const String baseUrl =
-    'http://192.168.X.X:8080/api';
+    'https://tiara-thirteen-output.ngrok-free.dev/api';
 
   Future<List<dynamic>> obtenerProductos() async {
 

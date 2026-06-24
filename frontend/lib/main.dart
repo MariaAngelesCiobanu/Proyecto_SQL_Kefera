@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/menu_page.dart';
+import 'pages/product_page.dart';
 
 void main() {
   runApp(const KeferaApp());
@@ -16,7 +17,7 @@ class KeferaApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFF0A0A0A),
       ),
-      home: const HomePage(),
+      home: const ProductPage(),
     );
   }
 }
