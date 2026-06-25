@@ -1,38 +1,36 @@
 import 'package:flutter/material.dart';
-import 'hamburguesas_page.dart';
+import 'categoria_page.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<String> categories = [
-      'Tesoros para Compartir',
-      'Jardines del Nilo',
-      'Hamburguesas de los Faraones',
-      'Hornos de Menfis',
-      'Pergaminos de Alejandría',
-      'Carnes del Desierto',
-      'Tesoros del Mar Rojo',
-      'Dulces de la Reina',
-      'Refrescos del Oasis',
-      'Zumos del Nilo',
-      'Batidos del Palacio',
-      'Smoothies Sagrados',
-      'Limonadas de Alejandría',
-      'Cafés de Menfis',
-      'Infusiones del Templo',
-      'Cócteles de los Dioses',
-      'Shishas del Imperio',
-    ];
+
+    final categorias = {
+      'Tesoros para Compartir': 1,
+      'Jardines del Nilo': 2,
+      'Hamburguesas de los Faraones': 3,
+      'Hornos de Menfis': 4,
+      'Pergaminos de Alejandría': 5,
+      'Carnes del Desierto': 6,
+      'Tesoros del Mar Rojo': 7,
+      'Dulces de la Reina': 8,
+      'Refrescos del Oasis': 9,
+      'Zumos del Nilo': 10,
+      'Batidos del Palacio': 11,
+      'Smoothies Sagrados': 12,
+      'Limonadas de Alejandría': 13,
+      'Cafés de Menfis': 14,
+      'Infusiones del Templo': 15,
+      'Cócteles de los Dioses': 16,
+      'Shishas del Imperio': 21,
+    };
 
     return Scaffold(
       body: Stack(
         children: [
 
-          // ==========================
-          // FONDO
-          // ==========================
           Positioned.fill(
             child: Image.asset(
               'assets/images/backgrounds/menu.png',
@@ -40,16 +38,12 @@ class MenuPage extends StatelessWidget {
             ),
           ),
 
-          // OSCURECER FONDO
           Positioned.fill(
             child: Container(
               color: Colors.black.withValues(alpha: 0.25),
             ),
           ),
 
-          // ==========================
-          // CONTENIDO
-          // ==========================
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
@@ -61,7 +55,6 @@ class MenuPage extends StatelessWidget {
                 child: Column(
                   children: [
 
-                    // LOGO
                     Image.asset(
                       'assets/images/logo/logo.png',
                       width: 220,
@@ -69,44 +62,44 @@ class MenuPage extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    // CATEGORÍAS
-                    ...categories.map(
-                      (category) => Padding(
+                    ...categorias.entries.map((categoria) {
+
+                      return Padding(
                         padding: const EdgeInsets.only(
                           bottom: 10,
                         ),
 
                         child: GestureDetector(
+
                           onTap: () {
 
-                            // HAMBURGUESAS
-                            if (category ==
-                                'Hamburguesas de los Faraones') {
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const HamburguesasPage(),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => CategoriaPage(
+                                  idCategoria: categoria.value,
+                                  nombreCategoria: categoria.key,
                                 ),
-                              );
-                            }
+                              ),
+                            );
                           },
 
                           child: Container(
+
                             height: 58,
 
                             decoration: BoxDecoration(
-                              color:
-                                  Colors.black.withValues(alpha: 0.55),
+                              color: Colors.black.withValues(
+                                alpha: 0.55,
+                              ),
 
                               borderRadius:
                                   BorderRadius.circular(14),
 
                               border: Border.all(
-                                color:
-                                    const Color(0xFFD4AF37),
-                                width: 1,
+                                color: const Color(
+                                  0xFFD4AF37,
+                                ),
                               ),
                             ),
 
@@ -121,15 +114,17 @@ class MenuPage extends StatelessWidget {
 
                                   Expanded(
                                     child: Text(
-                                      category,
+                                      categoria.key,
 
                                       style:
                                           const TextStyle(
                                         color:
-                                            Color(0xFFD4AF37),
+                                            Color(
+                                          0xFFD4AF37,
+                                        ),
                                         fontSize: 16,
                                         fontWeight:
-                                            FontWeight.w500,
+                                            FontWeight.bold,
                                       ),
                                     ),
                                   ),
@@ -137,18 +132,19 @@ class MenuPage extends StatelessWidget {
                                   const Icon(
                                     Icons.chevron_right,
                                     color:
-                                        Color(0xFFD4AF37),
-                                    size: 28,
+                                        Color(
+                                      0xFFD4AF37,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
 
-                    const SizedBox(height: 180),
+                    const SizedBox(height: 120),
                   ],
                 ),
               ),

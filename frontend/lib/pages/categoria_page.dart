@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import 'burger_detail_page.dart';
 
 class CategoriaPage extends StatefulWidget {
-
   final int idCategoria;
   final String nombreCategoria;
 
@@ -20,18 +20,16 @@ class CategoriaPage extends StatefulWidget {
 class _CategoriaPageState
     extends State<CategoriaPage> {
 
-  final ApiService apiService =
-      ApiService();
+  final ApiService apiService = ApiService();
 
-  late Future<List<dynamic>>
-      productosFuture;
+  late Future<List<dynamic>> productosFuture;
 
   @override
   void initState() {
     super.initState();
 
-    productosFuture =
-        apiService.obtenerProductosPorCategoria(
+    productosFuture = apiService
+        .obtenerProductosPorCategoria(
             widget.idCategoria);
   }
 
@@ -39,11 +37,8 @@ class _CategoriaPageState
   Widget build(BuildContext context) {
 
     return Scaffold(
-
       appBar: AppBar(
-        title: Text(
-          widget.nombreCategoria,
-        ),
+        title: Text(widget.nombreCategoria),
       ),
 
       body: FutureBuilder<List<dynamic>>(
@@ -53,15 +48,12 @@ class _CategoriaPageState
 
           if (snapshot.connectionState ==
               ConnectionState.waiting) {
-
             return const Center(
-              child:
-                  CircularProgressIndicator(),
+              child: CircularProgressIndicator(),
             );
           }
 
           if (snapshot.hasError) {
-
             return Center(
               child: Text(
                 snapshot.error.toString(),
@@ -73,27 +65,22 @@ class _CategoriaPageState
               snapshot.data ?? [];
 
           if (productos.isEmpty) {
-
             return const Center(
               child: Text(
-                'No hay productos disponibles',
+                "No hay productos",
               ),
             );
           }
 
           return ListView.builder(
+            itemCount: productos.length,
 
-            itemCount:
-                productos.length,
-
-            itemBuilder:
-                (context, index) {
+            itemBuilder: (context, index) {
 
               final producto =
                   productos[index];
 
               return Card(
-
                 margin:
                     const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -101,9 +88,8 @@ class _CategoriaPageState
                 ),
 
                 child: ListTile(
-
                   title: Text(
-                    producto["nombre"] ?? "",
+                    producto["nombre"],
                   ),
 
                   subtitle: Text(
@@ -116,18 +102,17 @@ class _CategoriaPageState
 
                   onTap: () {
 
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const Scaffold(
-        body: Center(
-          child: Text("FUNCIONA"),
-        ),
-      ),
-    ),
-  );
-},
-},
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            BurgerDetailPage(
+                          idProducto:
+                              producto["idProducto"],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               );
             },
