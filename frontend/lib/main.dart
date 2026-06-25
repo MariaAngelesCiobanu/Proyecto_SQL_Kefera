@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'pages/menu_page.dart';
 import 'pages/burger_detail_page.dart';
 import 'pages/division_cuenta_page.dart';
+import 'pages/login_page.dart';
+import 'pages/register_page.dart';
+import 'pages/pago_page.dart';
+import 'pages/tipo_pago_page.dart';
 
 void main() {
   runApp(const KeferaApp());
@@ -18,6 +22,16 @@ class KeferaApp extends StatelessWidget {
 
   theme: ThemeData(
     scaffoldBackgroundColor: const Color(0xFF0A0A0A),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+    backgroundColor: const Color(0xFFD4AF37),
+    foregroundColor: Colors.black,
+    elevation: 8,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(18),
+    ),
+  ),
+),
   ),
 
   routes: {
@@ -60,110 +74,204 @@ class HomePage extends StatelessWidget {
               color: Colors.black.withValues(alpha: 0.15),
             ),
           ),
+// BOTONES
+SafeArea(
+  child: Align(
+    alignment: Alignment.bottomCenter,
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(
+        30,
+        0,
+        30,
+        55,
+      ),
 
-          // BOTONES
-          SafeArea(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(25, 0, 25, 40),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // VER CARTA
-                    SizedBox(
-                      width: double.infinity,
-                      height: 58,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MenuPage(),
-                            ),
-                          );
-                        },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
 
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD4AF37),
-                          foregroundColor: Colors.black,
+        children: [
 
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
+          // EXPLORAR CARTA
+          SizedBox(
+            width: double.infinity,
+            height: 58,
 
-                        child: const Text(
-                          'VER CARTA',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ),
-                    ),
+            child: ElevatedButton(
 
-                    const SizedBox(height: 15),
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    const Color(0xFFD4AF37),
+                foregroundColor:
+                    Colors.black,
 
-                  SizedBox(
-  width: double.infinity,
-  height: 58,
-  child: ElevatedButton(
-    onPressed: () {
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(16),
+                ),
+              ),
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) =>
-              const DivisionCuentaPage(),
-        ),
-      );
-    },
+              onPressed: () {
 
-    child: const Text(
-      'DIVIDIR CUENTA',
-    ),
-  ),
-),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const MenuPage(),
+                  ),
+                );
+              },
 
-                    // RESERVAR
-                    SizedBox(
-                      width: double.infinity,
-                      height: 58,
-                      child: OutlinedButton(
-                        onPressed: () {},
+              child: const Text(
+                "📖 EXPLORAR CARTA",
 
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                            color: Color(0xFFD4AF37),
-                            width: 1.5,
-                          ),
-
-                          backgroundColor: Colors.black.withValues(alpha: 0.25),
-
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        
-
-                        child: const Text(
-                          'RESERVAR MESA',
-                          style: TextStyle(
-                            color: Color(0xFFD4AF37),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight:
+                      FontWeight.bold,
                 ),
               ),
             ),
           ),
+
+          const SizedBox(height: 15),
+
+          // PAGAR CUENTA
+          SizedBox(
+            width: double.infinity,
+            height: 58,
+
+            child: ElevatedButton(
+
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    const Color(0xFFD4AF37),
+                foregroundColor:
+                    Colors.black,
+
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(16),
+                ),
+              ),
+
+              onPressed: () {
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                        builder: (_) => const TipoPagoPage(),
+                  ),
+                );
+              },
+
+              child: const Text(
+                "💳 PAGAR CUENTA",
+
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 15),
+
+          // LOGIN
+          SizedBox(
+            width: double.infinity,
+            height: 58,
+
+            child: ElevatedButton(
+
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    const Color(0xFFD4AF37),
+                foregroundColor:
+                    Colors.black,
+
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(16),
+                ),
+              ),
+
+              onPressed: () {
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const LoginPage(),
+                  ),
+                );
+              },
+
+              child: const Text(
+                "👤 INICIAR SESIÓN",
+
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 15),
+
+          // REGISTRO
+          SizedBox(
+            width: double.infinity,
+            height: 58,
+
+            child: ElevatedButton(
+
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    const Color(0xFFD4AF37),
+                foregroundColor:
+                    Colors.black,
+
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(16),
+                ),
+              ),
+
+              onPressed: () {
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const RegisterPage(),
+                  ),
+                );
+              },
+
+              child: const Text(
+                "📝 REGISTRARSE",
+
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+),
         ],
       ),
     );

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../models/carrito.dart';
 import 'pago_page.dart';
+import 'tipo_pago_page.dart';
 
 class CarritoPage extends StatefulWidget {
   const CarritoPage({super.key});
@@ -117,7 +118,7 @@ class _CarritoPageState extends State<CarritoPage> {
                         context,
                         MaterialPageRoute(
                           builder: (_) =>
-                              const PagoPage(),
+                              const TipoPagoPage(),
                         ),
                       );
                     },
