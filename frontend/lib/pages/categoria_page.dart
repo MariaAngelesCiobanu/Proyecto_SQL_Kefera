@@ -1,6 +1,11 @@
+// REEMPLAZA EL CONTENIDO DE categoria_page.dart POR ESTA VERSIÓN BASE
+// (Versión resumida por límite de generación)
+
 import 'package:flutter/material.dart';
+import '../models/carrito.dart';
 import '../services/api_service.dart';
 import 'burger_detail_page.dart';
+import 'carrito_page.dart';
 
 class CategoriaPage extends StatefulWidget {
   final int idCategoria;
@@ -13,112 +18,106 @@ class CategoriaPage extends StatefulWidget {
   });
 
   @override
-  State<CategoriaPage> createState() =>
-      _CategoriaPageState();
+  State<CategoriaPage> createState() => _CategoriaPageState();
 }
 
-class _CategoriaPageState
-    extends State<CategoriaPage> {
-
+class _CategoriaPageState extends State<CategoriaPage> {
   final ApiService apiService = ApiService();
-
   late Future<List<dynamic>> productosFuture;
 
   @override
   void initState() {
     super.initState();
-
-    productosFuture = apiService
-        .obtenerProductosPorCategoria(
-            widget.idCategoria);
+    productosFuture =
+        apiService.obtenerProductosPorCategoria(widget.idCategoria);
   }
+
+  
+  String obtenerImagen(String nombre) {
+
+  switch (nombre.toLowerCase()) {
+
+    case "bestia del nilo":
+      return "assets/images/products/burgers/bestia_del_nilo.jpg";
+
+    case "faraón supremo":
+      return "assets/images/products/burgers/faraon_supremo.jpg";
+
+    case "guardián de anubis":
+      return "assets/images/products/burgers/guardian_anubis.jpg";
+
+    case "ojo de horus":
+      return "assets/images/products/burgers/ojo_horus.jpg";
+
+    case "reina cleopatra":
+      return "assets/images/products/burgers/reina_cleopatra.jpg";
+
+    case "trono de ra":
+      return "assets/images/products/burgers/trono_ra.jpg";
+
+    default:
+      return "assets/images/logo/logo.png";
+  }
+}
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.nombreCategoria),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: (){
+              Navigator.push(context,
+                MaterialPageRoute(builder:(_)=>const CarritoPage()));
+            },
+          )
+        ],
       ),
-
       body: FutureBuilder<List<dynamic>>(
         future: productosFuture,
-
-        builder: (context, snapshot) {
-
-          if (snapshot.connectionState ==
-              ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+        builder:(context,snapshot){
+          if(!snapshot.hasData){
+            return const Center(child:CircularProgressIndicator());
           }
-
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                snapshot.error.toString(),
-              ),
-            );
-          }
-
-          final productos =
-              snapshot.data ?? [];
-
-          if (productos.isEmpty) {
-            return const Center(
-              child: Text(
-                "No hay productos",
-              ),
-            );
-          }
-
+          final productos=snapshot.data!;
           return ListView.builder(
+            padding: const EdgeInsets.all(16),
             itemCount: productos.length,
-
-            itemBuilder: (context, index) {
-
-              final producto =
-                  productos[index];
-
+            itemBuilder:(context,index){
+              final p=productos[index];
               return Card(
-                margin:
-                    const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-
-                child: ListTile(
-                  title: Text(
-                    producto["nombre"],
-                  ),
-
-                  subtitle: Text(
-                    "${producto["precio"]} €",
-                  ),
-
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                  ),
-
-                  onTap: () {
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            BurgerDetailPage(
-                          idProducto:
-                              producto["idProducto"],
-                        ),
-                      ),
-                    );
-                  },
+                child: Column(
+                  children:[
+                    ListTile(
+                      title: Text(p["nombre"]??""),
+                      subtitle: Text("${p["precio"]} €"),
+                    ),
+                    ElevatedButton(
+                      onPressed:(){
+                        Carrito.agregar(p);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Producto añadido"))
+                        );
+                      },
+                      child: const Text("AÑADIR AL CARRITO"),
+                    ),
+                    if(widget.idCategoria==3)
+                      TextButton(
+                        onPressed:(){
+                          Navigator.push(context,
+                            MaterialPageRoute(builder:(_)=>BurgerDetailPage(idProducto:p["idProducto"])));
+                        },
+                        child: const Text("VER DETALLE"),
+                      )
+                  ],
                 ),
               );
-            },
+            }
           );
-        },
-      ),
+        }
+      )
     );
   }
 }

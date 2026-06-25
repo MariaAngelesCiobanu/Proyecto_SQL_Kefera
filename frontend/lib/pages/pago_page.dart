@@ -1,14 +1,14 @@
+
 import 'package:flutter/material.dart';
 
-class Pago_page extends StatefulWidget {
-  const Pago_page({super.key});
+class PagoPage extends StatefulWidget {
+  const PagoPage({super.key});
 
   @override
-  State<Pago_page> createState() => _Pago_pageState();
+  State<PagoPage> createState() => _PagoPageState();
 }
 
-class _Pago_pageState extends State<Pago_page> {
-
+class _PagoPageState extends State<PagoPage> {
   String tipoPago = "Pago único";
   String metodoPago = "Tarjeta";
 
@@ -31,35 +31,35 @@ class _Pago_pageState extends State<Pago_page> {
               ),
             ),
 
-            RadioListTile(
+            RadioListTile<String>(
               title: const Text("Pago único"),
               value: "Pago único",
               groupValue: tipoPago,
               onChanged: (value) {
                 setState(() {
-                  tipoPago = value.toString();
+                  tipoPago = value!;
                 });
               },
             ),
 
-            RadioListTile(
+            RadioListTile<String>(
               title: const Text("Dividir equitativamente"),
               value: "Equitativo",
               groupValue: tipoPago,
               onChanged: (value) {
                 setState(() {
-                  tipoPago = value.toString();
+                  tipoPago = value!;
                 });
               },
             ),
 
-            RadioListTile(
+            RadioListTile<String>(
               title: const Text("Cada uno paga lo suyo"),
               value: "Individual",
               groupValue: tipoPago,
               onChanged: (value) {
                 setState(() {
-                  tipoPago = value.toString();
+                  tipoPago = value!;
                 });
               },
             ),
@@ -74,35 +74,35 @@ class _Pago_pageState extends State<Pago_page> {
               ),
             ),
 
-            RadioListTile(
+            RadioListTile<String>(
               title: const Text("Tarjeta"),
               value: "Tarjeta",
               groupValue: metodoPago,
               onChanged: (value) {
                 setState(() {
-                  metodoPago = value.toString();
+                  metodoPago = value!;
                 });
               },
             ),
 
-            RadioListTile(
+            RadioListTile<String>(
               title: const Text("Bizum"),
               value: "Bizum",
               groupValue: metodoPago,
               onChanged: (value) {
                 setState(() {
-                  metodoPago = value.toString();
+                  metodoPago = value!;
                 });
               },
             ),
 
-            RadioListTile(
+            RadioListTile<String>(
               title: const Text("Efectivo"),
               value: "Efectivo",
               groupValue: metodoPago,
               onChanged: (value) {
                 setState(() {
-                  metodoPago = value.toString();
+                  metodoPago = value!;
                 });
               },
             ),
@@ -111,9 +111,9 @@ class _Pago_pageState extends State<Pago_page> {
 
             const Card(
               child: Padding(
-                padding: EdgeInsets.all(15),
+                padding: EdgeInsets.all(16),
                 child: Text(
-                  "Se recomienda dejar el pago en efectivo para el último, ya que la aplicación irá descontando automáticamente los importes ya abonados.",
+                  "Se recomienda dejar el pago en efectivo para el último pago para que la aplicación pueda descontar automáticamente los importes ya abonados.",
                 ),
               ),
             ),
@@ -124,7 +124,9 @@ class _Pago_pageState extends State<Pago_page> {
               height: 55,
               child: ElevatedButton(
                 onPressed: () {},
-                child: const Text("CONFIRMAR PAGO"),
+                child: const Text(
+                  "CONFIRMAR PAGO",
+                ),
               ),
             ),
           ],

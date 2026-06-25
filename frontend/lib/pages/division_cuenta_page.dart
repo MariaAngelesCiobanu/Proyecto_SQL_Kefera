@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
+import '../models/carrito.dart';
+import 'pago_page.dart';
 
 class DivisionCuentaPage extends StatefulWidget {
   const DivisionCuentaPage({super.key});
@@ -9,42 +10,28 @@ class DivisionCuentaPage extends StatefulWidget {
       _DivisionCuentaPageState();
 }
 
-class _DivisionCuentaPageState
-    extends State<DivisionCuentaPage> {
-
-  final ApiService apiService = ApiService();
-
-  late Future<List<dynamic>> productosFuture;
+class _DivisionCuentaPageState extends State<DivisionCuentaPage> {
 
   int personas = 2;
-
-  double total = 0;
+  bool dividirEquitativamente = true;
 
   final Set<int> productosSeleccionados = {};
 
-  @override
-  void initState() {
-    super.initState();
+  double get totalSeleccionado {
 
-    productosFuture =
-        apiService.obtenerProductos();
-  }
+    double total = 0;
 
-  void calcularTotal(
-      List<dynamic> productos) {
+    for (final item in Carrito.productos) {
 
-    total = 0;
+      if (dividirEquitativamente ||
+          productosSeleccionados.contains(
+              item.producto["idProducto"])) {
 
-    for (var producto in productos) {
-
-      if (productosSeleccionados.contains(
-          producto["idProducto"])) {
-
-        total +=
-            (producto["precio"] as num)
-                .toDouble();
+        total += item.subtotal;
       }
     }
+
+    return total;
   }
 
   @override
@@ -53,91 +40,123 @@ class _DivisionCuentaPageState
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text(
-          "Dividir Cuenta",
-        ),
+        title: const Text("Dividir cuenta"),
       ),
 
-      body: FutureBuilder<List<dynamic>>(
-        future: productosFuture,
+      body: Padding(
+        padding: const EdgeInsets.all(20),
 
-        builder:
-            (context, snapshot) {
+        child: Column(
 
-          if (snapshot.connectionState ==
-              ConnectionState.waiting) {
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
 
-            return const Center(
-              child:
-                  CircularProgressIndicator(),
-            );
-          }
+          children: [
 
-          if (snapshot.hasError) {
-
-            return Center(
-              child: Text(
-                snapshot.error.toString(),
+            const Text(
+              "Tipo de división",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
-            );
-          }
+            ),
 
-          final productos =
-              snapshot.data ?? [];
+            RadioListTile(
+              title: const Text(
+                  "Dividir equitativamente"),
+              value: true,
+              groupValue: dividirEquitativamente,
+              onChanged: (v) {
+                setState(() {
+                  dividirEquitativamente = true;
+                });
+              },
+            ),
 
-          calcularTotal(productos);
+            RadioListTile(
+              title: const Text(
+                  "Cada uno paga lo suyo"),
+              value: false,
+              groupValue: dividirEquitativamente,
+              onChanged: (v) {
+                setState(() {
+                  dividirEquitativamente = false;
+                });
+              },
+            ),
 
-          return Column(
-            children: [
+            const SizedBox(height: 10),
 
+            Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.center,
+              children: [
+
+                IconButton(
+                  onPressed: () {
+                    if (personas > 1) {
+                      setState(() {
+                        personas--;
+                      });
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.remove_circle,
+                  ),
+                ),
+
+                Text(
+                  personas.toString(),
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      personas++;
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.add_circle,
+                  ),
+                ),
+              ],
+            ),
+
+            if (!dividirEquitativamente)
               Expanded(
                 child: ListView.builder(
+                  itemCount: Carrito.productos.length,
+                  itemBuilder: (context, index) {
 
-                  itemCount:
-                      productos.length,
-
-                  itemBuilder:
-                      (context, index) {
-
-                    final producto =
-                        productos[index];
+                    final item =
+                        Carrito.productos[index];
 
                     return CheckboxListTile(
-
-                      title: Text(
-                        producto["nombre"] ??
-                            "",
-                      ),
-
-                      subtitle: Text(
-                        "${producto["precio"]} €",
-                      ),
-
                       value:
-                          productosSeleccionados
-                              .contains(
-                        producto[
-                            "idProducto"],
+                          productosSeleccionados.contains(
+                        item.producto["idProducto"],
                       ),
-
+                      title: Text(
+                        item.producto["nombre"],
+                      ),
+                      subtitle: Text(
+                        "Cantidad: ${item.cantidad}    ${item.subtotal.toStringAsFixed(2)} €",
+                      ),
                       onChanged: (value) {
 
                         setState(() {
 
-                          if (value ==
-                              true) {
-
-                            productosSeleccionados
-                                .add(
-                              producto[
-                                  "idProducto"],
+                          if (value == true) {
+                            productosSeleccionados.add(
+                              item.producto["idProducto"],
                             );
                           } else {
-
-                            productosSeleccionados
-                                .remove(
-                              producto[
-                                  "idProducto"],
+                            productosSeleccionados.remove(
+                              item.producto["idProducto"],
                             );
                           }
                         });
@@ -147,136 +166,48 @@ class _DivisionCuentaPageState
                 ),
               ),
 
-              Container(
-                padding:
-                    const EdgeInsets.all(
-                  20,
-                ),
+            const SizedBox(height: 20),
 
-                child: Column(
-                  children: [
+            Text(
+              "Total: ${totalSeleccionado.toStringAsFixed(2)} €",
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
 
-                    Text(
-                      "Total: ${total.toStringAsFixed(2)} €",
+            const SizedBox(height: 10),
 
-                      style:
-                          const TextStyle(
-                        fontSize: 24,
-                        fontWeight:
-                            FontWeight.bold,
-                      ),
+            Text(
+              "Cada persona paga ${(totalSeleccionado / personas).toStringAsFixed(2)} €",
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton(
+                onPressed: () {
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          const PagoPage(),
                     ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment
-                              .center,
-
-                      children: [
-
-                        IconButton(
-                          onPressed: () {
-
-                            if (personas >
-                                1) {
-
-                              setState(() {
-                                personas--;
-                              });
-                            }
-                          },
-
-                          icon: const Icon(
-                            Icons
-                                .remove_circle,
-                            size: 40,
-                          ),
-                        ),
-
-                        Text(
-                          personas
-                              .toString(),
-
-                          style:
-                              const TextStyle(
-                            fontSize: 30,
-                            fontWeight:
-                                FontWeight
-                                    .bold,
-                          ),
-                        ),
-
-                        IconButton(
-                          onPressed: () {
-
-                            setState(() {
-                              personas++;
-                            });
-                          },
-
-                          icon: const Icon(
-                            Icons
-                                .add_circle,
-                            size: 40,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    Container(
-                      width:
-                          double.infinity,
-
-                      height: 60,
-
-                      child:
-                          ElevatedButton(
-
-                        onPressed: () {
-
-                          setState(() {});
-                        },
-
-                        child: const Text(
-                          "DIVIDIR CUENTA",
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    Text(
-                      personas > 0
-                          ? "Cada persona paga ${(total / personas).toStringAsFixed(2)} €"
-                          : "",
-
-                      style:
-                          const TextStyle(
-                        fontSize: 22,
-                        fontWeight:
-                            FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
+                  );
+                },
+                child: const Text(
+                  "CONTINUAR AL PAGO",
                 ),
               ),
-            ],
-          );
-        },
+            ),
+          ],
+        ),
       ),
     );
   }
